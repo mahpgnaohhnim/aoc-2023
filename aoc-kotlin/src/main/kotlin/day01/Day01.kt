@@ -10,7 +10,7 @@ class Day01 {
 
         fun sumCalibrateWithNumWords(file: String): Int {
             return file.lines()
-                .map { replaceFirstAndLastWordNumWithInt(it) }
+                .map { replaceWordNumWithInt(it) }
                 .sumOf { calibrateLine(it) }
         }
 
@@ -21,30 +21,16 @@ class Day01 {
             return "$firstNumber$lastNumber".toInt()
         }
 
-        private fun replaceFirstAndLastWordNumWithInt(line: String): String {
-            val wordNumRegex = Regex("one|two|three|four|five|six|seven|eight|nine")
-            val matches = wordNumRegex.findAll(line)
-            val first = matches.firstOrNull()?.groupValues?.first()
-            val firstRange = matches.firstOrNull()?.range
-            if (firstRange != null && first != null) {
-                return replaceFirstAndLastWordNumWithInt(line.replaceRange(firstRange, mapWordToInt(first)))
-            }
-            return line
-        }
-
-        private fun mapWordToInt(word: String): String {
-            return when (word) {
-                "one" -> "1"
-                "two" -> "2"
-                "three" -> "3"
-                "four" -> "4"
-                "five" -> "5"
-                "six" -> "6"
-                "seven" -> "7"
-                "eight" -> "8"
-                "nine" -> "9"
-                else -> ""
-            }
+        private fun replaceWordNumWithInt(line: String): String {
+            return line.replace("one", "one1one")
+                .replace("two", "two2two")
+                .replace("three", "three3three")
+                .replace("four", "four4four")
+                .replace("five", "five5five")
+                .replace("six", "six6six")
+                .replace("seven", "seven7seven")
+                .replace("eight", "eight8eight")
+                .replace("nine", "nine9nine")
         }
     }
 }
