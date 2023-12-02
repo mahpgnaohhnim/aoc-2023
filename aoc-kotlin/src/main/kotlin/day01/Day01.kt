@@ -8,11 +8,43 @@ class Day01 {
             return file.lines().sumOf { calibrateLine(it) }
         }
 
+        fun sumCalibrateWithNumWords(file: String): Int {
+            return file.lines()
+                .map { replaceFirstAndLastWordNumWithInt(it) }
+                .sumOf { calibrateLine(it) }
+        }
+
         private fun calibrateLine(line: String): Int {
             val filteredLine = line.filter { it.isDigit() }
             val firstNumber = filteredLine.first()
             val lastNumber = filteredLine.last()
             return "$firstNumber$lastNumber".toInt()
+        }
+
+        private fun replaceFirstAndLastWordNumWithInt(line: String): String {
+            val wordNumRegex = Regex("one|two|three|four|five|six|seven|eight|nine")
+            val matches = wordNumRegex.findAll(line)
+            val first = matches.firstOrNull()?.groupValues?.first()
+            val firstRange = matches.firstOrNull()?.range
+            if (firstRange != null && first != null) {
+                return replaceFirstAndLastWordNumWithInt(line.replaceRange(firstRange, mapWordToInt(first)))
+            }
+            return line
+        }
+
+        private fun mapWordToInt(word: String): String {
+            return when (word) {
+                "one" -> "1"
+                "two" -> "2"
+                "three" -> "3"
+                "four" -> "4"
+                "five" -> "5"
+                "six" -> "6"
+                "seven" -> "7"
+                "eight" -> "8"
+                "nine" -> "9"
+                else -> ""
+            }
         }
     }
 }
@@ -30,5 +62,16 @@ fun main() {
         )
     }
 
+    fun part2() {
+        val result = Day01.sumCalibrateWithNumWords(inputFile.readText())
+        println(
+            """
+            Result day 1 part2:
+            $result
+        """.trimIndent()
+        )
+    }
+
     part1()
+    part2()
 }
