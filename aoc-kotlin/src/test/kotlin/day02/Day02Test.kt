@@ -19,4 +19,10 @@ class Day02Test {
         val result = Day02.sumValidGameIds(example.readText(), maxCubeAmounts)
         assertEquals(8, result)
     }
+
+    @Test
+    fun challengePart2() {
+        val result = Day02.sumGamePower(example.readText())
+        assertEquals(2286, result)
+    }
 }

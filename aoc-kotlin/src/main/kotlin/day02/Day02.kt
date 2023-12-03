@@ -9,6 +9,13 @@ import java.security.InvalidParameterException
 class Day02 {
 
     companion object {
+
+        fun sumGamePower(text: String): Int {
+            val games = text.lines().map { convertLineToGame(it) }
+            val powers = games.map { getGamePower(it) }
+            return powers.sum()
+        }
+
         fun sumValidGameIds(text: String, maxAmount: List<CubeAmount>): Int {
             val games = text.lines().map { convertLineToGame(it) }
             val validGames = games.filter {
@@ -19,7 +26,7 @@ class Day02 {
             return validGames.sumOf { it.id }
         }
 
-        fun convertLineToGame(line: String): GameDto {
+        private fun convertLineToGame(line: String): GameDto {
             val mainParts = line.split(':')
             if (mainParts.size != 2) {
                 throw InvalidParameterException("invalid line $line")
@@ -55,6 +62,12 @@ class Day02 {
             }
             return CubeAmount(amount = amount, cubeColor = cubeColor)
         }
+
+        private fun getGamePower(game: GameDto): Int {
+            val map = game.cubeAmounts.groupBy { it.cubeColor }
+            val maxValues = map.values.map { it.maxBy { cubeAmount -> cubeAmount.amount } }
+            return maxValues.map { it.amount }.reduce { acc, next -> acc * next }
+        }
     }
 }
 
@@ -77,5 +90,16 @@ fun main() {
         )
     }
 
+    fun part2() {
+        val result = Day02.sumGamePower(inputFile.readText())
+        println(
+            """
+            Result day 2 part2:
+            $result
+        """.trimIndent()
+        )
+    }
+
     part1()
+    part2()
 }
