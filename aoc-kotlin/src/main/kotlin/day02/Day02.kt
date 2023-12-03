@@ -3,6 +3,7 @@ package day02
 import day02.dto.CubeAmount
 import day02.dto.GameDto
 import day02.enums.CubeColor
+import java.io.File
 import java.security.InvalidParameterException
 
 class Day02 {
@@ -55,4 +56,26 @@ class Day02 {
             return CubeAmount(amount = amount, cubeColor = cubeColor)
         }
     }
+}
+
+fun main() {
+    val inputFile = File(Day02::class.java.getResource("input.txt")?.path.orEmpty())
+
+    fun part1() {
+        val maxCubeAmounts = listOf(
+            CubeAmount(CubeColor.RED, 12),
+            CubeAmount(CubeColor.GREEN, 13),
+            CubeAmount(CubeColor.BLUE, 14)
+        )
+
+        val result = Day02.sumValidGameIds(inputFile.readText(), maxCubeAmounts)
+        println(
+            """
+            Result day 2 part1:
+            $result
+        """.trimIndent()
+        )
+    }
+
+    part1()
 }
